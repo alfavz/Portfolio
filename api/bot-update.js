@@ -8,7 +8,7 @@ const SCRIPT      = path.join(BASE, 'script.js');
 const AVATAR      = path.join(BASE, 'avatar.jpg');
 
 // ── BOT API KEY — ganti dengan key milikmu ──────────
-export const BOT_API_KEY = process.env.BOT_API_KEY || 'alfavz-tixo-secret-2026';
+export const BOT_API_KEY = process.env.BOT_API_KEY || 'Api_Alfarezz';
 
 // ── GITHUB CONFIG ───────────────────────────────────
 const GH_REPO   = process.env.GH_REPO   || 'alfavz/portfolio';   // username/repo
