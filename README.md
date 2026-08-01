@@ -1,6 +1,7 @@
 # 🌐 alfavz — Portfolio
 
-Personal portfolio website built with vanilla HTML, CSS, and JavaScript.
+**Live:** https://portfolio-alfavz.vercel.app/
+
 
 ## ✨ Features
 
