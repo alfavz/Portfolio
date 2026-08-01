@@ -11,7 +11,7 @@ const AVATAR      = path.join(BASE, 'avatar.jpg');
 export const BOT_API_KEY = process.env.BOT_API_KEY || 'Api_Alfarezz';
 
 // ── GITHUB CONFIG ───────────────────────────────────
-const GH_REPO   = process.env.GH_REPO   || 'alfavz/portfolio';   // username/repo
+const GH_REPO   = process.env.GH_REPO   || 'alfavz/Portfolio';   // username/repo
 const GH_BRANCH = process.env.GH_BRANCH || 'main';
 
 function gitPush(message) {
