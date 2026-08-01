@@ -104,7 +104,7 @@ function addLine(text, cls = '') {
 }
 
 function runCmd(cmd) {
-  addLine(`<span class="t-prefix">rafel@dev</span>  ~  <span style="color:var(--color-text)">$ ${cmd}</span>`);
+  addLine(`<span class="t-prefix">alfavz@dev</span>  ~  <span style="color:var(--color-text)">$ ${cmd}</span>`);
 
   if (cmd === 'clear') {
     setTimeout(() => { terminalBody.innerHTML = ''; }, 200);
