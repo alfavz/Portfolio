@@ -36,7 +36,6 @@ node /root/baileys/server.mjs
 
 Then open:
 - **Portfolio** → `http://localhost:3000/`
-- **Music Player** → `http://localhost:3000/music-player/`
 
 ## 🎨 Tech Stack
 
