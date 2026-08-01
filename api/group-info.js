@@ -1,22 +1,23 @@
-// Vercel serverless function: /api/group-info?url=<whatsapp invite link>
-// Runs server-side (not in the browser) so it isn't blocked by CORS/robots
-// rules the way a direct fetch from script.js would be.
-//
-// Reads OpenGraph meta tags from the WhatsApp invite page:
-//   og:title                 -> group/community name
-//   og:image                 -> group/community photo
-//   invite_link_type_v2      -> PARENT (community) | SUB (group) | DEFAULT
-//   parent_group_subject     -> name of the parent community, if any
+// Vercel serverless function: /api/group-info?url=<whatsapp invite/channel link>
+// Supports:
+//   - WA Group/Community : https://chat.whatsapp.com/XXXX
+//   - WA Channel         : https://whatsapp.com/channel/XXXX
 
 import * as cheerio from 'cheerio';
 
 export default async function handler(req, res) {
   const { url } = req.query;
 
-  if (!url || !url.startsWith('https://chat.whatsapp.com/')) {
+  const isGroup   = url && url.startsWith('https://chat.whatsapp.com/');
+  const isChannel = url && (
+    url.startsWith('https://whatsapp.com/channel/') ||
+    url.startsWith('https://www.whatsapp.com/channel/')
+  );
+
+  if (!isGroup && !isChannel) {
     return res.status(400).json({
       status: false,
-      message: 'Provide a valid WhatsApp invite URL, e.g. ?url=https://chat.whatsapp.com/XXXX',
+      message: 'Provide a valid WhatsApp group or channel URL.',
     });
   }
 
@@ -28,22 +29,24 @@ export default async function handler(req, res) {
       },
     });
 
-    if (!response.ok) {
-      throw new Error(`WhatsApp responded with ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`WhatsApp responded with ${response.status}`);
 
     const html = await response.text();
     const $ = cheerio.load(html);
 
-    const groupName = $('meta[property="og:title"]').attr('content') || null;
-    const groupIcon = $('meta[property="og:image"]').attr('content') || null;
-    const inviteType = $('meta[property="invite_link_type_v2"]').attr('content') || 'DEFAULT';
-    const community = $('meta[property="parent_group_subject"]').attr('content') || null;
+    const groupName  = $('meta[property="og:title"]').attr('content') || null;
+    const groupIcon  = $('meta[property="og:image"]').attr('content') || null;
+    const inviteType = isChannel
+      ? 'CHANNEL'
+      : ($('meta[property="invite_link_type_v2"]').attr('content') || 'DEFAULT');
+    const community  = $('meta[property="parent_group_subject"]').attr('content') || null;
+    const description = $('meta[property="og:description"]').attr('content') || null;
 
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
     return res.status(200).json({
       status: true,
-      data: { groupName, groupIcon, inviteType, community },
+      type: isChannel ? 'channel' : 'group',
+      data: { groupName, groupIcon, inviteType, community, description },
     });
   } catch (err) {
     return res.status(500).json({ status: false, message: err.message });
