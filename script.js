@@ -237,11 +237,11 @@ async function loadGroupInfo(cardId) {
 
     desc.classList.remove('loading');
     desc.textContent = (community && community !== groupName)
-      ? `Part of ${community}. Powered by Bot Xelira.`
-      : 'Parent community housing active groups, powered by Bot Xelira.';
+      ? `Part of ${community}. Powered by Bot Vera.`
+      : 'Parent community housing active groups, powered by Alfavz.';
   } catch {
     desc.classList.remove('loading');
-    desc.textContent = 'Parent community housing active groups, powered by Bot Xelira.';
+    desc.textContent = 'Parent community housing active groups, powered by Bot Alfavz.';
   }
 }
 
